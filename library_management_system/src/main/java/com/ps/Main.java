@@ -4,27 +4,23 @@ import com.ps.dao.impl.BookDAOImpl;
 import com.ps.dao.impl.BorrowedBookDAOImpl;
 import com.ps.dao.impl.MemberDAOImpl;
 import com.ps.dao.interfaces.BookDAO;
+import com.ps.dao.interfaces.BorrowedBookDAO;
 import com.ps.dao.interfaces.MemberDAO;
 import com.ps.model.Book;
 import com.ps.model.BorrowedBook;
 import com.ps.model.Member;
+import com.ps.service.LibraryService;
 
 public class Main {
     public static void main(String[] args) {
 
-        var borrowedBookDaoImpl = new BorrowedBookDAOImpl();
+        BookDAO bookDAO = new BookDAOImpl();
+        BorrowedBookDAO borrowedBookDAO = new BorrowedBookDAOImpl();
+        MemberDAO memberDAO = new MemberDAOImpl();
 
-        System.out.println("Deleting data to DB");
-        System.out.println("====================");
-        borrowedBookDaoImpl.deleteBorrowedBook(14);
-        for(var book : borrowedBookDaoImpl.getAllBorrowedBook()){
-            System.out.printf("%-10s %-10s %-10s %-20s %-20s %-20s %n",
-                    book.getBorrow_id(),
-                    book.getBook_id(),
-                    book.getMember_id(),
-                    book.getBorrow_date(),
-                    book.getDue_date(),
-                    book.getReturn_date());
-        }
+        LibraryService libraryService = new LibraryService(bookDAO, borrowedBookDAO, memberDAO);
+        libraryService.borrowBook(2, 3, "2025-06-24");
+
+
     }
 }
